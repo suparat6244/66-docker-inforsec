@@ -21,7 +21,7 @@ services:
         - PGADMIN_DEFAULT_PASSWORD = ${PGADMIN_DEFAULT_PASSWORD}
         
   strapi:
-    image: naskio/strapi:latest
+    image: strapi-suparat:latest
     container_name: my-app-docker
     ports:
         - 1337:1337
