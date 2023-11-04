@@ -4,6 +4,8 @@ services:
   db:
     image: postgres:latest
     container_name: my-db-docker
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - 54321:5432
     environment:
@@ -12,6 +14,8 @@ services:
   pg-admin:
     image: dpage/pgadmin4:latest
     container_name: pg-admin-docker
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
     ports:
        - 4433:443
        - 8080:80
@@ -19,7 +23,7 @@ services:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
   strapi:
-    image: suparatpoonsawat/strapi-suparat:1.0.0
+    image: suparatpoonsawat/strapi-suparat:1.1.0
     container_name: my-app-docker
     ports:
       - 1337:1337
@@ -31,3 +35,11 @@ services:
       - DATABASE_PORT=${DATABASE_PORT}
       - DATABASE_SSL=false
       - DATABASE_CLIENT=postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+volumes:
+  postgres_data:
+  pgadmin_data:
